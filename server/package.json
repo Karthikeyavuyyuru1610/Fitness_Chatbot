@@ -1,0 +1,21 @@
+{
+  "name": "fitness-bot-server",
+  "version": "1.0.0",
+  "description": "AI-powered fitness chatbot backend with Gemini, SQLite, and Auth",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "sql.js": "^1.11.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "@google/generative-ai": "^0.21.0",
+    "uuid": "^11.1.0"
+  }
+}
