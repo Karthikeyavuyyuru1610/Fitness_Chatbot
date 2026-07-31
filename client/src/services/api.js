@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../config/apiConfig';
 
 /**
- * Axios instance pre-configured with the backend base URL.
+ * Axios instance pre-configured with the centralized API base URL.
  */
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 60000,
 });
@@ -22,6 +23,26 @@ api.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+/**
+ * Response Interceptor: Format error messages and handle network connectivity issues gracefully.
+ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!error.response) {
+      // Network error, server offline, or CORS failure
+      error.customMessage = 'Unable to connect to the backend server. Please verify your internet connection or check backend availability.';
+    } else if (error.response.status === 401) {
+      error.customMessage = 'Authentication expired. Please log in again.';
+    } else if (error.response.status >= 500) {
+      error.customMessage = 'Server encountered an issue. Please try again later.';
+    } else {
+      error.customMessage = error.response.data?.error?.message || error.response.data?.message || 'An unexpected error occurred.';
+    }
+    return Promise.reject(error);
+  }
 );
 
 // ── Auth API ────────────────────────────────────────────────────────
