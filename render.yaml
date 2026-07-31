@@ -25,7 +25,7 @@ services:
         value: "*"
 
   # ----------------------------------------------------------------------------
-  # Option 2 (Alternative): Separate Backend Web Service
+  # Option 2: Backend Web Service (For Two-Service Architecture)
   # ----------------------------------------------------------------------------
   - type: web
     name: fitness-bot-backend
@@ -47,3 +47,15 @@ services:
         value: ./data/fitness_bot.db
       - key: CORS_ORIGIN
         value: "*"
+
+  # ----------------------------------------------------------------------------
+  # Option 3: Frontend Static Site (For Two-Service Architecture)
+  # ----------------------------------------------------------------------------
+  - type: static
+    name: fitness-bot-frontend
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://fitness-bot-backend.onrender.com/api
