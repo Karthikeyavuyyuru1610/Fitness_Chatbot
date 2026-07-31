@@ -4,7 +4,7 @@ import axios from 'axios';
  * Axios instance pre-configured with the backend base URL.
  */
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
   timeout: 60000,
 });

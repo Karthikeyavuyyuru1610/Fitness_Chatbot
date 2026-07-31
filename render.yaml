@@ -1,0 +1,49 @@
+services:
+  # ----------------------------------------------------------------------------
+  # Option 1: Unified Full-Stack Web Service (Single Service Deployment)
+  # Serves both Node.js Express API and React built static files together.
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: fitness-bot
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DB_PATH
+        value: ./data/fitness_bot.db
+      - key: CORS_ORIGIN
+        value: "*"
+
+  # ----------------------------------------------------------------------------
+  # Option 2 (Alternative): Separate Backend Web Service
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: fitness-bot-backend
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DB_PATH
+        value: ./data/fitness_bot.db
+      - key: CORS_ORIGIN
+        value: "*"
